@@ -1,0 +1,16 @@
+.Timeline {
+    width: 14em;
+    height: 1em;
+    margin-top: 1em;
+    margin-left: 1em;
+    color: #555;
+    cursor: pointer;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);   
+}
+
+.Timeline-filling {
+    width: 0;
+    height: 1em;
+    background-color: rgba(0,0,0, 0.3);
+
+}
