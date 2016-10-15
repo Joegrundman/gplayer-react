@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ControlButton from '../ControlButton/ControlButton'
 import Timeline from '../Timeline/Timeline'
 import Volume from '../Volume/Volume'
-// import Visualizer from '../Visualizer/Visualizer'
+import Switch from '../Switch/Switch'
 import './Controls.css'
 
 class Controls extends Component {
@@ -15,21 +15,20 @@ class Controls extends Component {
             currentTrackName: '',
             currentVolume: 0.7,
             isPaused: false,
-            isPlaying: false
+            mode: "PLAY_ALL",
+            endTrack: true
         }
 
         this.visHeight = 200
-        this.visWidth = 300
+        this.visWidth = 340
 
         this.bufferCache = {}
         this.pause = this.pause.bind(this)
         this.play = this.play.bind(this)
         this.skipForward = this.skipForward.bind(this)
         this.skipBackward = this.skipBackward.bind(this)
-        this.setDuration = this.setDuration.bind(this)
         this.onChangeVolume = this.onChangeVolume.bind(this)
         this.onMoveHead = this.onMoveHead.bind(this)
-        this.drawVisualOscillator =  this.drawVisualOscillator.bind(this)
         this.drawVisualBars = this.drawVisualBars.bind(this)
     }
 
@@ -43,7 +42,7 @@ class Controls extends Component {
         }, () => this.requestAndInitAudio())
     }
 
-    componentDidUpdate() {
+    componentDidUpdate() {       
         if (this.props.track.name !== this.state.currentTrackName){
 
             this.setState({
@@ -53,64 +52,13 @@ class Controls extends Component {
                 currentTrackName: this.props.track.name
             }, () => {
                 this.audioContext.close().then(() => {
+                    clearInterval(this.timeListener)
                     this.buffer = null
                     this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
                     this.requestAndInitAudio(true)
                 })
             })
         }
-    }
-
-    onChangeVolume(newVol) {
-        console.log('newVol', newVol)
-        this.setState({
-            currentVolume: newVol
-        }, () => {
-            console.log('currentVolume', this.state.currentVolume)
-            if (this.gainNode) {
-                this.gainNode.gain.value = this.state.currentVolume
-            }
-        })
-    }
-
-    onMoveHead(newProgress) {
-        // this.audio.currentTime = newProgress
-        // this.audioContext.currentTime = newProgress * this.state.duration
-        this.buffer = this.bufferCache[this.props.track.name]
-        this.initAudio()
-        this.play(newProgress * this.state.duration)
-    }
-
-    pause() {
-        this.setState({
-            isPaused: true
-        }, () => this.audioContext.suspend())
-
-    }
-
-    play() {
-        if (this.state.isPaused) {
-            this.setState({
-                isPaused: false
-            }, () => this.audioContext.resume())
-        } else {
-            this.startAudioApi()
-        }
-    }
-
-    startAudioApi(offset) {
-        var _this = this
-        if(!offset) {offset = 0}
-        this.setState({
-            isPlaying: true
-        }, () => { 
-            this.source.start(offset)
-            this.setTimeListener()
-            this.gainNode.gain.value = this.state.currentVolume
-            // this.drawVisualOscillator()
-            this.drawVisualBars()
-        })
-
     }
 
     drawVisualBars () {
@@ -133,36 +81,6 @@ class Controls extends Component {
         }
     }
 
-    drawVisualOscillator () {
-        requestAnimationFrame(this.drawVisualOscillator)
-        this.analyser.getByteTimeDomainData(this.dataArray)
-
-        this.canvasCtx.clearRect(0, 0, this.visWidth, this.visHeight)
-        this.canvasCtx.lineWidth = 2
-        this.canvasCtx.strokeStyle = 'rgba(0,0,0,0.3)'
-
-        this.canvasCtx.beginPath()
-
-        var sliceWidth =  this.visWidth * 1.0 / this.bufferLength
-        var x = 0
-
-        for(var i = 0; i < this.bufferLength; i++){
-            var v = this.dataArray[i] / 128.0
-            var y =  v *  this.visHeight/2
-
-            if (i ===0) {
-                this.canvasCtx.moveTo(x, y)
-            } else {
-                this.canvasCtx.lineTo(x, y)
-            }
-
-            x += sliceWidth
-        }
-
-        this.canvasCtx.lineTo(this.canvas.width, this.canvas.height/2)
-        this.canvasCtx.stroke()
-    }
-
     initAudio() {
         this.source = this.audioContext.createBufferSource()
         this.source.buffer = this.buffer
@@ -171,29 +89,92 @@ class Controls extends Component {
         this.source.connect(this.analyser)
         this.analyser.connect(this.gainNode)
         this.gainNode.connect(this.audioContext.destination)
-        // this.analyser.fftSize = 2056 // for oscilaator
+
         this.analyser.fftSize = 64 // for barchart
-        // this.bufferLength = this.analyser.fftSize // for oscillator
         this.bufferLength = this.analyser.frequencyBinCount // for bar chart
         this.dataArray = new Uint8Array(this.bufferLength)
         this.analyser.getByteTimeDomainData(this.dataArray)
         this.setState({
             duration: this.source.buffer.duration
         })
-        this.source.onended = () => this.skipForward()
+        if(this.state.mode === "PLAY_ALL" && this.state.endTrack){
+            this.source.onended = () => this.skipForward()
+        } else if(this.source.mode === "LOOP" && this.state.endTrack){
+            this.source.loop =  true
+        } else if(this.state.mode === "SHUFFLE" && this.state.endTrack){
+            this.source.onended = () => this.nextRandom()
+        }
+
     }
 
-    requestAndInitAudio(shouldAutoplay) {
+    nextRandom () {
+        // TODO
+    }
+
+    onChangeVolume(newVol) {
+        this.setState({
+            currentVolume: newVol
+        }, () => {
+            console.log('currentVolume', this.state.currentVolume)
+            if (this.gainNode) {
+                this.gainNode.gain.value = this.state.currentVolume
+            }
+        })
+    }
+
+    onMoveHead(newProgress) {
+        var startFromTime =  this.state.duration * newProgress
+        this.setState({
+            endTrack: false,
+            progress: newProgress
+        }, () => {
+            this.audioContext.close().then(() => {
+                clearInterval(this.timeListener)
+                this.buffer = null
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+                this.requestAndInitAudio(true, startFromTime)
+
+
+                window.setTimeout(() =>this.setState({endTrack: true}), 500)
+            })
+        })
+    }
+
+    pause() {
+        this.setState({
+            isPaused: true
+        }, () => this.audioContext.suspend())
+
+    }
+
+    play() {
+        if (this.state.isPaused) {
+            this.setState({
+                isPaused: false
+            }, () => this.audioContext.resume())
+        } else {
+            this.startAudioApi()
+        }
+    }
+
+    startAudioApi(offset) {
+        if(!offset) {offset = 0}
+        this.source.start(0, offset)
+        this.setTimeListener(offset)
+        this.gainNode.gain.value = this.state.currentVolume
+        this.drawVisualBars()
+    }
+
+
+    requestAndInitAudio(shouldAutoplay, offset) {
 
         if (this.props.track && this.bufferCache.hasOwnProperty(this.props.track.name)) {
-            console.log('getting resource from cache')
             this.buffer = this.bufferCache[this.props.track.name]
             this.initAudio()
             if (shouldAutoplay) {
-                this.startAudioApi()
+                this.startAudioApi(offset)
             }
         } else {
-            console.log('fetching resource with xhr')
             const request = new XMLHttpRequest()
 
             const onSuccess = buffer => {
@@ -201,7 +182,7 @@ class Controls extends Component {
                 this.bufferCache[this.props.track.name] = buffer
                 this.initAudio()
                 if (shouldAutoplay) {
-                    this.startAudioApi()
+                    this.startAudioApi(offset)
                 }
             }
 
@@ -216,24 +197,10 @@ class Controls extends Component {
         }
     }
 
-    setDuration() {
-        this.setState({
-            duration: this.audio.duration
-        })
-    }
-
-    skipBackward() {
-        this.props.skipBackward()
-    }
-
-    skipForward() {
-        this.props.skipForward()
-    }
-
-    setTimeListener() {
+    setTimeListener(offset = 0) {
         var lastProgress = 0
-        window.setInterval(() => {
-            var nextProgress = this.audioContext.currentTime / this.state.duration
+        this.timeListener = window.setInterval(() => {
+            var nextProgress = (this.audioContext.currentTime + offset) / this.state.duration
             if (nextProgress !== lastProgress) {
                 if (isNaN(nextProgress)) {
                     nextProgress = 0
@@ -241,9 +208,20 @@ class Controls extends Component {
                 lastProgress = nextProgress
                 this.setState({
                     progress: nextProgress
+                }, () => {
+                    if(nextProgress >= 1.001){this.skipForward()}
                 })
             }
-        }, 100)
+        }, 1000)
+    }
+
+
+    skipBackward() {
+        this.props.skipBackward()
+    }
+
+    skipForward() {
+        this.props.skipForward()
     }
 
 
@@ -272,8 +250,18 @@ class Controls extends Component {
                 <br />
                 <span className="Controls-current-time">{timeDisplay}</span>
                 <br />
+                <div className="Controls-switch-container">
+                    <i className="ion-play Controls-icon"></i>
+                    <Switch switchId="playAll" />
+                    <i className="ion-shuffle Controls-icon"></i>
+                    <Switch switchId="shuffle" />
+                    <i className="ion-loop Controls-icon"></i>
+                    <Switch switchId="loop"/>
+                </div>
                 <div className="Control-visualizer">
-                <canvas className="Control-visualizer-canvas" ref="visualizer" style={visualizerStyle} />
+                    <canvas className="Control-visualizer-canvas" 
+                            ref="visualizer" 
+                            style={visualizerStyle} />
                 </div>
 
             </div>

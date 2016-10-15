@@ -15,7 +15,7 @@
     margin-top: 0.5em;
     font-size: 24px;
     padding-left: 10px;
-    color: #555;
+    color: rgba(0,0,0,0.5);
 }
 
 .Control-visualizer-canvas {
@@ -26,8 +26,18 @@
     font-family: 'Titilliam Web', sans-serif;
     margin-left: 11em;
     font-size: 10;
-    color: #444;
+    color: rgba(0,0,0,0.5);
 
 
 }
 
+.Controls-switch-container {
+    margin-top: 1em;
+    display: inline-flex;
+}
+
+.Controls-icon {
+    color: rgba(0,0,0,0.6);
+    padding-top: 9px;
+    padding-left: 2em;
+}
