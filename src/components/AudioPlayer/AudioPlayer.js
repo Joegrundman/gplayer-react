@@ -4,13 +4,18 @@ import Playlist from '../Playlist/Playlist'
 import Controls from '../Controls/Controls'
 import './AudioPlayer.css'
 
+/**
+ * The main Audio Player component.
+ * @ child component Playlist is the selectable list of tracks
+ * @ child component Controls contains audio controls, volume and timeline and visualizer
+ * @ child component Title contains logo, playlist name and link to website, and options
+ */
+
 class AudioPlayer extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            currentTrackId: 0,
-            duration: 0,
-            playPercent: 0
+            currentTrackId: 0
         }
         this.playlist = this.props.musicData.playlist
         this.handleSelectTrack =  this.handleSelectTrack.bind(this)
@@ -25,24 +30,14 @@ class AudioPlayer extends Component {
     }
 
     skipBackward() {
-        var nextId = 0
-        const oldId = this.state.currentTrackId
-        if(oldId > nextId) {
-            nextId = oldId -1
-        }
         this.setState({
-            currentTrackId: nextId
+            currentTrackId: Math.max(0, this.state.currentTrackId - 1)
         })
     }
 
     skipForward() {
-        var nextId = this.playlist.length - 1
-        const oldId = this.state.currentTrackId
-        if(oldId < nextId) {
-            nextId = oldId + 1
-        }
         this.setState({
-            currentTrackId: nextId
+            currentTrackId: Math.min(this.playlist.length - 1, this.state.currentTrackId + 1)
         })
     }
 

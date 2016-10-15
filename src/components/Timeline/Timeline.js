@@ -11,18 +11,22 @@ class Timeline extends Component {
     }
 
     handleMoveHead (e) {
-        var newWidth =  (e.pageX - this.timelineContainer.offsetLeft)
+        // var newWidth =  (e.pageX - this.timelineContainer.offsetLeft)
+        // if (newWidth < 0) { newWidth = 0}
+        // else if (newWidth > this.timelineWidth) {
+        //     newWidth = this.timelineWidth
+        // }
+        // this.props.moveHead(this.props.duration * (newWidth / this.timelineWidth))
+        var newWidth =  (e.pageX - this.timelineContainer.offsetLeft/ this.timelineWidth)
         if (newWidth < 0) { newWidth = 0}
-        else if (newWidth > this.timelineWidth) {
-            newWidth = this.timelineWidth
-        }
-        this.props.moveHead(this.props.duration * (newWidth / this.timelineWidth))
+        else if (newWidth > 1) { newWidth = 1 }
+        this.props.moveHead(newWidth)
     }
 
     render () {
-
         const fillStyle = {
-            width: this.timelineWidth * (this.props.progress / this.props.duration) || 0
+            width: (this.timelineWidth * this.props.progress || 0),
+            maxWidth: this.timelineWidth
         }
 
         return (
@@ -34,9 +38,12 @@ class Timeline extends Component {
 }
 
 Timeline.propTypes = {
-    progress: PropTypes.number.isRequired,
-    duration: PropTypes.number.isRequired,
+    progress: PropTypes.number,
     moveHead: PropTypes.func.isRequired
+}
+
+Timeline.defaultProps = {
+    progress: 0
 }
 
 export default Timeline
