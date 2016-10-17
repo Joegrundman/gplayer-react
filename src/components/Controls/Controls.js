@@ -221,7 +221,7 @@ class Controls extends Component {
                     if(nextProgress >= 1.001){this.skipForward()}
                 })
             }
-        }, 1000)
+        }, 300)
     }
 
 
@@ -258,7 +258,13 @@ class Controls extends Component {
             height: this.visHeight
         }
 
-        const timeDisplay = ((Math.floor(this.state.progress * this.state.duration) || 0) + '/' + Math.floor(this.state.duration) + 's')
+        const format = (timeInSecs) => {
+            const mins = Math.floor(timeInSecs / 60)
+            const secs = timeInSecs % 60
+            return '' + mins + ":" + secs
+        }
+
+        const timeDisplay = (format(Math.floor(this.state.progress * this.state.duration) || 0) + '/' + format(Math.floor(this.state.duration)))
 
         return (
             <div className="Controls">
