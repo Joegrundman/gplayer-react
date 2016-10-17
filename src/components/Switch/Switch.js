@@ -4,19 +4,25 @@ import './Switch.css'
 class Switch extends Component {
     render () {
         return (
-            <div className="onoffswitch">
-                <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id={this.props.switchId} onChange={e => console.log('flicked')} />
-                <label className="onoffswitch-label" htmlFor={this.props.switchId}>
-                    <span className="onoffswitch-inner"></span>
-                    <span className="onoffswitch-switch"></span>
-                </label>
+            <div className="modeswitch">
+                <input type="checkbox"
+                    name="modeswitch"
+                    className="modeswitch-checkbox"
+                    id={this.props.switchId}
+                    onChange={this.props.onSelect}
+                    checked={this.props.isActive}
+                    />
+                <label className="modeswitch-label"
+                    htmlFor={this.props.switchId}
+                    />
             </div>
         )
     }
 }
 
 Switch.propTypes = {
-    switchId: PropTypes.string.isRequired
+    switchId: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired
 }
 
 export default Switch

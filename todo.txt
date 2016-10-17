@@ -1,0 +1,3 @@
+Correct visualizer so final bar shows full width
+skip back should go back to beginning of track if more than 3s in
+mode selector buttons to be wired up

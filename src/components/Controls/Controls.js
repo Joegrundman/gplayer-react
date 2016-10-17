@@ -16,13 +16,17 @@ class Controls extends Component {
             currentVolume: 0.7,
             isPaused: false,
             mode: "PLAY_ALL",
-            endTrack: true
+            onendedEnabled: true
         }
 
+        //  visualiser canvas dimensions
         this.visHeight = 200
         this.visWidth = 340
 
         this.bufferCache = {}
+
+
+        // method bindings
         this.pause = this.pause.bind(this)
         this.play = this.play.bind(this)
         this.skipForward = this.skipForward.bind(this)
@@ -30,6 +34,9 @@ class Controls extends Component {
         this.onChangeVolume = this.onChangeVolume.bind(this)
         this.onMoveHead = this.onMoveHead.bind(this)
         this.drawVisualBars = this.drawVisualBars.bind(this)
+        this.togglePlayAll = this.togglePlayAll.bind(this)
+        this.toggleLoop = this.toggleLoop.bind(this)
+        this.toggleShuffle = this.toggleShuffle.bind(this)
     }
 
     componentDidMount() {
@@ -97,11 +104,11 @@ class Controls extends Component {
         this.setState({
             duration: this.source.buffer.duration
         })
-        if(this.state.mode === "PLAY_ALL" && this.state.endTrack){
+        if(this.state.mode === "PLAY_ALL" && this.state.onendedEnabled){
             this.source.onended = () => this.skipForward()
-        } else if(this.source.mode === "LOOP" && this.state.endTrack){
+        } else if(this.source.mode === "LOOP" && this.state.onendedEnabled){
             this.source.loop =  true
-        } else if(this.state.mode === "SHUFFLE" && this.state.endTrack){
+        } else if(this.state.mode === "SHUFFLE" && this.state.onendedEnabled){
             this.source.onended = () => this.nextRandom()
         }
 
@@ -125,7 +132,7 @@ class Controls extends Component {
     onMoveHead(newProgress) {
         var startFromTime =  this.state.duration * newProgress
         this.setState({
-            endTrack: false,
+            onendedEnabled: false,
             progress: newProgress
         }, () => {
             this.audioContext.close().then(() => {
@@ -135,7 +142,7 @@ class Controls extends Component {
                 this.requestAndInitAudio(true, startFromTime)
 
 
-                window.setTimeout(() =>this.setState({endTrack: true}), 500)
+                window.setTimeout(() =>this.setState({onendedEnabled: true}), 500)
             })
         })
     }
@@ -223,6 +230,25 @@ class Controls extends Component {
     skipForward() {
         this.props.skipForward()
     }
+    
+    togglePlayAll () {
+        console.log('clicked')
+        this.setState({
+            mode: 'PLAY_ALL'
+        })
+    }
+
+    toggleLoop () {
+        this.setState({
+            mode: 'LOOP'
+        })
+    }
+
+    toggleShuffle () {
+        this.setState({
+            mode: 'SHUFFLE'
+        })
+    }
 
 
     render() {
@@ -252,11 +278,11 @@ class Controls extends Component {
                 <br />
                 <div className="Controls-switch-container">
                     <i className="ion-play Controls-icon"></i>
-                    <Switch switchId="playAll" />
+                    <Switch switchId="playAll" onSelect={this.togglePlayAll} isActive={this.state.mode === "PLAY_ALL"} />
                     <i className="ion-shuffle Controls-icon"></i>
-                    <Switch switchId="shuffle" />
+                    <Switch switchId="shuffle" onSelect={this.toggleShuffle} isActive={this.state.mode === "SHUFFLE"} />
                     <i className="ion-loop Controls-icon"></i>
-                    <Switch switchId="loop"/>
+                    <Switch switchId="loop" onSelect={this.toggleLoop} isActive={this.state.mode === "LOOP"} />
                 </div>
                 <div className="Control-visualizer">
                     <canvas className="Control-visualizer-canvas" 
