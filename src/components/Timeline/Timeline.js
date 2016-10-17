@@ -12,7 +12,6 @@ class Timeline extends Component {
 
     handleMoveHead (e) {
         var newWidth =  (e.pageX - this.timelineContainer.offsetLeft) / this.timelineWidth
-        console.log('newwidth', newWidth)
         if (newWidth < 0) { newWidth = 0}
         else if (newWidth > 1) { newWidth = 1 }
         this.props.moveHead(newWidth)

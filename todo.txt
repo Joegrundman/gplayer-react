@@ -1,2 +1,5 @@
-skip back should go back to beginning of track if more than 3s in
+time should show mins'secs not just secs
 mode selector buttons to be wired up
+buffer cache should be lru (max 20)
+tracks should be buffering in background
+hue should be imported as property to AudioPlayer along with musicdata
