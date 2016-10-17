@@ -260,7 +260,8 @@ class Controls extends Component {
 
         const format = (timeInSecs) => {
             const mins = Math.floor(timeInSecs / 60)
-            const secs = timeInSecs % 60
+            const secs = '' + timeInSecs % 60
+            if (secs.length < 2) { secs = "0" + secs}
             return '' + mins + ":" + secs
         }
 
