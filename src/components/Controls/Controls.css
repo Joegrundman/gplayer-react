@@ -38,6 +38,7 @@
 
 .Controls-icon {
     color: rgba(0,0,0,0.6);
-    padding-top: 9px;
+    font-size: 18px;
+    padding-top: 5px;
     padding-left: 2em;
 }

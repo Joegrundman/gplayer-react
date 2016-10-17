@@ -9,8 +9,3 @@ ReactDOM.render(
   <AudioPlayer musicData={musicData}/>,
   document.getElementById('root')
 );
-
-
-// const segment = (                <div className="Control-visualizer">
-//                 <canvas className="Control-visualizer-canvas" ref="visualizer" style={visualizerStyle} />
-//                 </div>)
