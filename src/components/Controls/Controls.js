@@ -90,7 +90,7 @@ class Controls extends Component {
         switch(this.props.mode) {
             case 'PLAY_ALL': this.skipForward(); break;
             case 'LOOP': this.restartPlayer(0); break;
-            case 'SHUFFLE': this.nextRandom(); break;
+            case 'SHUFFLE': this.skipForward(); break; 
             default: this.source.stop(); break;
         }
     }
@@ -113,10 +113,8 @@ class Controls extends Component {
         })
     }
 
-
-
     nextRandom () {
-        // TODO
+        // no action needed
     }
 
     onChangeVolume(newVol) {
@@ -260,7 +258,7 @@ class Controls extends Component {
 
         const format = (timeInSecs) => {
             const mins = Math.floor(timeInSecs / 60)
-            const secs = '' + timeInSecs % 60
+            var secs = '' + timeInSecs % 60
             if (secs.length < 2) { secs = "0" + secs}
             return '' + mins + ":" + secs
         }

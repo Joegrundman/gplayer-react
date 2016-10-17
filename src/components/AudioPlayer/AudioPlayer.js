@@ -80,7 +80,7 @@ class AudioPlayer extends Component {
 
 
     setMode(mode) {
-
+        console.log('mode', mode)
         if (mode === 'SHUFFLE') {
             this.setState({ mode }, () => this.setRandomPlaylist())
         } else if (mode === 'PLAY_ALL') {
@@ -91,7 +91,7 @@ class AudioPlayer extends Component {
                 currentRandomTrack: 0
             })
         } else if (mode === 'LOOP') {
-            this.setState(mode)
+            this.setState({mode})
         }
     }
 
