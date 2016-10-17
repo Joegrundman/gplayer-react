@@ -73,8 +73,8 @@ class Controls extends Component {
         this.analyser.getByteFrequencyData(this.dataArray)
 
         this.canvasCtx.clearRect(0, 0, this.visWidth, this.visHeight)
-
-        var barWidth = ((this.visWidth / this.bufferLength) * 2.5) - 5
+        var barWidthMultiplier = 1
+        var barWidth = ((this.visWidth / this.bufferLength) * barWidthMultiplier) - 5
         var barHeight
         var x = 0
 
@@ -97,8 +97,8 @@ class Controls extends Component {
         this.analyser.connect(this.gainNode)
         this.gainNode.connect(this.audioContext.destination)
 
-        this.analyser.fftSize = 64 // for barchart
-        this.bufferLength = this.analyser.frequencyBinCount // for bar chart
+        this.analyser.fftSize = 32 
+        this.bufferLength = this.analyser.frequencyBinCount 
         this.dataArray = new Uint8Array(this.bufferLength)
         this.analyser.getByteTimeDomainData(this.dataArray)
         this.setState({
