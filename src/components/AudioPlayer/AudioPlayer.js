@@ -112,7 +112,7 @@ class AudioPlayer extends Component {
 
     render() {
         return (
-            <div className="AudioPlayer">
+            <div className="AudioPlayer" style={{backgroundColor: this.props.hue}}>
                 <Title data={this.props.musicData.data} />
                 <div className="AudioPlayer-main-container">
                     <Playlist playlist={this.props.musicData.playlist}
