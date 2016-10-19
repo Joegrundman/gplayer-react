@@ -48,7 +48,7 @@ class Controls extends Component {
     }
 
     componentDidUpdate() {       
-        if (this.props.track.name !== this.state.currentTrackName && !this.isFetching){
+        if (this.props.track.name !== this.state.currentTrackName && !this.props.isFetching){
             this.setState({
                 isPaused: false,
                 duration: 0,
@@ -159,7 +159,7 @@ class Controls extends Component {
 
     startAudioApi(offset) {
         if(!offset) {offset = 0}
-        this.isFetching =  false
+        this.props.setIsFetching(false)
         this.source.start(0, offset)
         this.setTimeListener(offset)
         this.gainNode.gain.value = this.state.currentVolume
@@ -177,7 +177,7 @@ class Controls extends Component {
                 this.startAudioApi(offset)
             }
         } else {
-            this.isFetching =  true
+            this.props.setIsFetching(true)
 
             const request = new XMLHttpRequest()
 
@@ -222,6 +222,7 @@ class Controls extends Component {
 
 
     skipBackward() {
+        if(this.props.isFetchimg) { return }
         if(this.state.progress > 0.02) {
             this.restartPlayer(0)
         } else {
@@ -231,6 +232,7 @@ class Controls extends Component {
     }
 
     skipForward() {
+        if(this.props.isFetching){ return  }
         this.props.skipForward()
     }
     
