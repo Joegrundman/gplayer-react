@@ -32,17 +32,17 @@
 
 a:link {
     text-decoration: none;
-    color: #555;
+    color: rgba(0,0,0,0.65);
 }
 a:visited {
     text-decoration: none;
-    color: #555;
+    color: rgba(0,0,0,0.65);
 }
 a:hover {
     text-decoration: none;
-    color: #555; 
+    color: rgba(0,0,0,0.65);
 }
 a:active {
-    color: #555;
+    color: rgba(0,0,0,0.65);
     text-decoration: none;
 }

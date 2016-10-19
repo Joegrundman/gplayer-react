@@ -20,7 +20,7 @@ class Controls extends Component {
         //  visualiser canvas dimensions
         this.visHeight = 200
         this.visWidth = 340
-
+        this.isFetching = false
         this.bufferCache = {}
 
         // method bindings
@@ -48,21 +48,13 @@ class Controls extends Component {
     }
 
     componentDidUpdate() {       
-        if (this.props.track.name !== this.state.currentTrackName){
-
+        if (this.props.track.name !== this.state.currentTrackName && !this.isFetching){
             this.setState({
                 isPaused: false,
                 duration: 0,
                 progress: 0,
                 currentTrackName: this.props.track.name
-            }, () => {
-                this.audioContext.close().then(() => {
-                    clearInterval(this.timeListener)
-                    this.buffer = null
-                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
-                    this.requestAndInitAudio(true)
-                })
-            })
+            }, this.restartPlayer)
         }
     }
 
@@ -154,17 +146,20 @@ class Controls extends Component {
     }
 
     restartPlayer(offsetTime) {
-            this.audioContext.close().then(() => {
+            this.audioContext.close()
+            .then(() => {
                 clearInterval(this.timeListener)
                 this.buffer = null
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
                 this.requestAndInitAudio(true, offsetTime)
                 window.setTimeout(() =>this.setState({onendedEnabled: true}), 500)
-            })        
+            })
+   
     }
 
     startAudioApi(offset) {
         if(!offset) {offset = 0}
+        this.isFetching =  false
         this.source.start(0, offset)
         this.setTimeListener(offset)
         this.gainNode.gain.value = this.state.currentVolume
@@ -182,6 +177,8 @@ class Controls extends Component {
                 this.startAudioApi(offset)
             }
         } else {
+            this.isFetching =  true
+
             const request = new XMLHttpRequest()
 
             const onSuccess = buffer => {
@@ -199,6 +196,7 @@ class Controls extends Component {
             request.responseType = 'arraybuffer'
             request.onload = () => {
                 this.audioContext.decodeAudioData(request.response, onSuccess, onError)
+
             }
             request.send()
         }

@@ -1,5 +1,5 @@
 .Playlist {
-    box-shadow: inset 1px 1px 2px 0.5px rgba(50, 50, 50, 0.3);
+    box-shadow: inset 1px 1px 3px 0.5px rgba(0, 0, 0, 0.3);
     width: 25em;
     height: 30.4em;
     display: flex;
@@ -15,50 +15,50 @@
 }
  
 .Playlist::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.34);
 }
  
 .Playlist::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0, 0.3);
-  outline: 1px solid rgba(0,30, 30, 0.3);
+  background-color: rgba(0,0,0, 0.2);
+  outline: 1px solid rgba(0,0, 0, 0.3);
 }
 
 .Playlist-cell {
     padding-left: 2em;
     font-family: sans-serif;
     font-size: 14px;
-    color: #444;
+    color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
     width: ( 100% - 2em);
 }
 
 .Playlist-cell:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0.5px 0.51px 3px 0.5px rgba(55, 55, 55, 0.3);
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0.5px 0.51px 3px 0.5px rgba(0, 0, 0, 0.3);
 }
 
 .Playlist-cell:active {
-    background-color: rgba(55, 55, 55, 0.1);
-    box-shadow: inset 1px 1px 2px 1px rgba(55, 55, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .Playlist-playing {
-    background-color: rgba(05, 05, 05, 0.1);
-    box-shadow: inset 1px 1px 2px 1px rgba(55, 55, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .Playlist-playing:hover {
-    background-color: rgba(05, 05, 05, 0.1);
-    box-shadow: inset 1px 1px 2px 1px rgba(55, 55, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .Playlist-isplaying {
-    background-color: rgba(05, 05, 05, 0.1);
-    box-shadow: inset 1px 1px 2px 1px rgba(55, 55, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .Playlist-isplaying:hover {
-    background-color: rgba(05, 05, 05, 0.1);
-    box-shadow: inset 1px 1px 2px 1px rgba(55, 55, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px 1px 2px 1px rgba(0, 0, 0 , 0.4);
 }

@@ -4,7 +4,7 @@ import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 import './index.css';
 import {musicData} from './musicData'
 
-const hue = '#e9e9e5'
+const hue = '#eee'
 
 ReactDOM.render(
   <AudioPlayer musicData={musicData} hue={hue}/>,
