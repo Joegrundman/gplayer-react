@@ -18,13 +18,15 @@ class AudioPlayer extends Component {
             currentTrackId: 0,
             randomPlaylist: [],
             mode: 'PLAY_ALL',
-            currentRandomTrack: 0
+            currentRandomTrack: 0,
+            isFetching: false,
         }
         this.playlist = this.props.musicData.playlist
         this.handleSelectTrack = this.handleSelectTrack.bind(this)
         this.skipBackward = this.skipBackward.bind(this)
         this.skipForward = this.skipForward.bind(this)
         this.setMode = this.setMode.bind(this)
+        this.setIsFetching = this.setIsFetching.bind(this)
     }
 
     handleSelectTrack(id) {
@@ -59,6 +61,12 @@ class AudioPlayer extends Component {
                 currentTrackId: Math.min(this.playlist.length - 1, this.state.currentTrackId + 1)
             })
         }
+    }
+
+    setIsFetching (isFetching) {
+        this.setState({
+            isFetching
+        })
     }
 
     setRandomPlaylist() {
@@ -118,8 +126,11 @@ class AudioPlayer extends Component {
                     <Playlist playlist={this.props.musicData.playlist}
                         activeId={this.state.currentTrackId}
                         handleSelectTrack={this.handleSelectTrack}
+                        isFetching={this.state.isFetching}
                         />
                     <Controls track={this.playlist[this.state.currentTrackId]}
+                        isFetching={this.state.isFetching}
+                        setIsFetching={this.setIsFetching}
                         skipBackward={this.skipBackward}
                         skipForward={this.skipForward}
                         setMode={this.setMode}
