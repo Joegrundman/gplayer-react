@@ -23,7 +23,8 @@
 }
 
 .Controls-current-time {
-    font-family: 'Titilliam Web', sans-serif;
+    font-family: monospace;
+    /*font-family: 'Titilliam Web', sans-serif;*/
     margin-left: 11em;
     font-size: 10;
     color: rgba(0,0,0,0.6);

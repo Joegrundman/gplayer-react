@@ -14,6 +14,7 @@ import './AudioPlayer.css'
 class AudioPlayer extends Component {
     constructor(props) {
         super(props)
+
         this.state = {
             currentTrackId: 0,
             randomPlaylist: [],

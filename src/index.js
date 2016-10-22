@@ -1,12 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
+import reducer from './reducers'
 import './index.css';
 import {musicData} from './musicData'
 
-const hue = '#eee'
+const hue = '#ddd'
 
-ReactDOM.render(
-  <AudioPlayer musicData={musicData} hue={hue}/>,
-  document.getElementById('root')
-);
+let store = createStore(reducer)
+
+const App = (
+  <Provider store={store}>
+      <AudioPlayer musicData={musicData} hue={hue}/>
+  </Provider>
+    
+)
+
+render(<App />, document.getElementById('root'));
