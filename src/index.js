@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
-import reducer from './reducers'
+import reducer from './reducer'
 import './index.css';
 import {musicData} from './musicData'
 
@@ -18,4 +18,4 @@ const App = (
     
 )
 
-render(<App />, document.getElementById('root'));
+render(App, document.getElementById('root'));

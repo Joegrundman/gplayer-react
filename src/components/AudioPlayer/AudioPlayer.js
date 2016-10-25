@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import Title from '../Title/Title'
 import Playlist from '../Playlist/Playlist'
 import Controls from '../Controls/Controls'
@@ -8,7 +8,7 @@ import './AudioPlayer.css'
  * The main Audio Player component.
  * @ child component Playlist is the selectable list of tracks
  * @ child component Controls contains audio controls, volume and timeline and visualizer
- * @ child component Title contains logo, playlist name and link to website, and options
+ * @ child component Title contains logo, playlist name and link to website
  */
 
 class AudioPlayer extends Component {
@@ -141,6 +141,15 @@ class AudioPlayer extends Component {
             </div>
         )
     }
+}
+
+AudioPlayer.propTypes = {
+    hue: PropTypes.string.isRequired,
+    musicData: PropTypes.object
+}
+
+AudioPlayer.defaultProps = {
+    hue: '#ffffff'
 }
 
 export default AudioPlayer

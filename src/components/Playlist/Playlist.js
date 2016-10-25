@@ -1,22 +1,67 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
+import { connect } from 'react-redux'
+import { setCurrentTrackId } from '../../actions'
 import './Playlist.css'
 
-class Playlist extends Component {
-
-    render () {
-        const playlist =  this.props.playlist.map((track, i) => (
-            <div className={ i === this.props.activeId ? 'Playlist-cell Playlist-isplaying' : 'Playlist-cell'}
-                onClick={!this.props.isFetching ? e => this.props.handleSelectTrack(i): null}
+const Playlist = ({playlist, activeId, isFetching, handleSelectTrack}) => {
+        const playlistSelectors =  playlist.map((track, i) => (
+            <div className={ i === activeId ? 'Playlist-cell Playlist-isplaying' : 'Playlist-cell'}
+                onClick={!isFetching ? e => handleSelectTrack(i): null}
                 key={i} >
                 <p> Track: {i + 1} - {track.name}</p>
             </div>
         ))
         return (
             <div className="Playlist">
-            {playlist}
+            {playlistSelectors}
             </div>
         )
+}
+
+Playlist.propTypes = {
+    playlist: PropTypes.object,
+    activeId: PropTypes.number,
+    isFetching: PropTypes.bool,
+    handleSelectTrack: PropTypes.func
+}
+
+
+const mapStateToProps = (state) => {
+    return {
+        activeId: state.currentTrackId,
+        playlist: state.playlist,
+        isFetching: state.isFetching
     }
 }
 
-export default Playlist
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleSelectTrack: (e) => {
+            e.preventDefault()
+        } 
+    }
+}
+
+const ConnectedPlaylist = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Playlist)
+// class Playlist extends Component {
+
+//     render () {
+//         const playlist =  this.props.playlist.map((track, i) => (
+//             <div className={ i === this.props.activeId ? 'Playlist-cell Playlist-isplaying' : 'Playlist-cell'}
+//                 onClick={!this.props.isFetching ? e => this.props.handleSelectTrack(i): null}
+//                 key={i} >
+//                 <p> Track: {i + 1} - {track.name}</p>
+//             </div>
+//         ))
+//         return (
+//             <div className="Playlist">
+//             {playlist}
+//             </div>
+//         )
+//     }
+// }
+
+export default ConnectedPlaylist

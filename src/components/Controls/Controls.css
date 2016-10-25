@@ -23,7 +23,7 @@
 }
 
 .Controls-current-time {
-    font-family: monospace;
+    font-family: 'Droid Sans Mono', monospace;
     /*font-family: 'Titilliam Web', sans-serif;*/
     margin-left: 11em;
     font-size: 10;
