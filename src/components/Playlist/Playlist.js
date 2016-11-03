@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { setCurrentTrackId } from '../../actions'
+import { setCurrentTrackId, clearRandomPlaylist, setMode } from '../../actions'
+import {MODE} from '../../constants'
 import './Playlist.css'
 
 const Playlist = ({playlist, activeId, isFetching, handleSelectTrack}) => {
@@ -36,8 +37,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSelectTrack: (e) => {
-            e.preventDefault()
+        handleSelectTrack: (i) => {
+            dispatch(clearRandomPlaylist())
+            dispatch(setCurrentTrackId(i))
+            dispatch(setMode(MODE.PLAY_ALL))
         } 
     }
 }

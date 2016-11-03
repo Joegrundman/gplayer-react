@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import ControlButton from '../ControlButton/ControlButton'
 import Timeline from '../Timeline/Timeline'
 import Volume from '../Volume/Volume'
@@ -300,6 +301,18 @@ class Controls extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    
+}
+
+const mapDispatchToProps = (dispatch) => {
+
+}
+
+const ConnectedControls =  connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Controls)
 
 
-export default Controls
+export default ConnectedControls
