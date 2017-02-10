@@ -8,13 +8,12 @@ export const decrementCurrentTrackId = () => ({ type: types.DECREMENT_CURRENT_TR
 export const incrementCurrentTrackId = () => ({ type: types.INCREMENT_CURRENT_TRACK_ID })
 export const fetchTrackLoading = () => ({ type: types.FETCH_TRACK_LOADING })
 export const fetchTrackSuccess = () => ({ type: types.FETCH_TRACK_SUCCESS })
-export const fetchTrackError = () => ({ type: types.FETCH_TRACK_ERROR })
+export const fetchTrackError = () => ({ type: types.FETCH_TRACK_ERROR, payload: "Could not get track." })
 export const setVolume = payload => ({ type: types.SET_VOLUME, payload })
 export const setProgress = payload => ({ type: types.SET_PROGRESS, payload })
 export const setCurrentTrackId = payload => ({ type: types.SET_CURRENT_TRACK_ID, payload })
 export const setCurrentTrackName = payload => ({ type: types.SET_CURRENT_TRACK_NAME, payload })
 export const setMode = payload => ({ type: types.SET_MODE, payload })
-export const setIsFetching = payload => ({ type: types.SET_IS_FETCHING, payload })
 export const setRandomPlaylist = payload => ({ type: types.SET_RANDOM_PLAYLIST, payload })
 export const setRandomPlaylistId = payload => ({ type: types.SET_RANDOM_PLAYLIST_ID, payload })
 export const setPlaylist = payload => ({ type: types.SET_PLAYLIST, payload })
@@ -50,7 +49,7 @@ export const fetchTrack = (url) => {
         const request = new XMLHttpRequest()
 
         const onSuccess = () => {
-            dispatch(setIsFetching(false))
+            dispatch(fetchTrackSuccess())
         }
 
         const onError = (err) => {

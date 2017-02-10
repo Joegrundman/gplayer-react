@@ -41,3 +41,5 @@ it('should not increment beyond maxLen', () => {
     const nextVal = increment(val, maxLen)
     expect(nextVal).toEqual(5)
 })
+
+

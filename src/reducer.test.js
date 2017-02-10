@@ -67,18 +67,6 @@ it('should set mode', () => {
     expect(nextState.mode).toEqual('LOOP')
 })
 
-
-it('should set isFetching', () => {
-    const state = {
-        isFetching: true
-    }
-    deepFreeze(state)
-    const action = actions.setIsFetching(false)
-    const nextState = reducer(state, action)
-    expect(nextState.isFetching).toEqual(false)
-})
-
-
 it('should set playlist', () => {
     const state = {
         playlist: [{"a":"a"}, {"b": "b"}]
