@@ -1,4 +1,0 @@
-time should show mins'secs not just secs
-buffer cache should be lru (max 20)
-tracks should be buffering in background
-hue should be imported as property to AudioPlayer along with musicdata
