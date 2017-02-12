@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 import './index.css';
 import {musicData} from './musicData'
+// import lonelyBeach from './lonelybeach.jpg' 
 
 const hue = '#eee'
 
